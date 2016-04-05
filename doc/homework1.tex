@@ -13,16 +13,30 @@
 \maketitle
 
 The first homework assignment will be written entirely in Python. It will serve,
-in part, as practice for submitting homework as well as a test of your Python,
-Numpy, and Matplotlib knowledge and your general programming abilities.
+in part, as practice for submitting homework using git and GitHub as well as a
+test of your Python, Numpy, and Matplotlib knowledge and your general
+programming abilities.
 
-For the portions of the problems marked ``{\bf Report}'' be sure to include your
-written responses and any plots requested in a PDF document. Place the document
-in the ``{\tt report}'' directory of your repository and give it the name ``{\tt
-  report.pdf}''. Please include your name and UWNetID at the top of the
-report.
+Please see the document ``{\tt Grading.md}'' on the course website for
+instructions on how to write and submit your homework. Recall that there are
+four main components that you will be graded on:
+\begin{itemize}
+\item Will your code pass the automated tests described in the exercises?
+\item Do you have a well-written report for the exercises marked ``{\bf
+    Report}''?
+\item Is your code well-documented according to the rubric?
+\item Does your code perform well for the questions marked ``{\bf
+    Performance}''? (Note that none of the questions in the first homework
+  assignment will be tested for performance.)
+\end{itemize}
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Exercise \#1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 Consider the function $C : \mathbb{N} \to \mathbb{N}$
 \[
@@ -33,16 +47,16 @@ Consider the function $C : \mathbb{N} \to \mathbb{N}$
     1, & \text{if } n = 1.
   \end{cases}
 \]
-That is, if the input number is even then divide it by two. If the if the input
-number is odd then multiply it by three and add one. If the given number is one
-then return one.
+That is, if the input integer is even then divide it by two. If the if the input
+integer is odd then multiply it by three and add one. If the input integer is
+one then return one.
 
 Given an $n \in \mathbb{N}$ define the sequence,
 \[
-  n_0 := n, \;\;
-  n_1 := C(n_0), \;\;
-  n_2 := C(n_1), \;\;
-  n_3 := C(n_2), \;\;
+  n_0 := n, \quad
+  n_1 := C(n_0), \quad
+  n_2 := C(n_1), \quad
+  n_3 := C(n_2), \quad
   \ldots.
 \]
 The {\it Collatz conjecture} states that no matter which $n \in \mathbb{N}$ you
@@ -56,84 +70,452 @@ its {\it stopping time}.
 
 For example, the Collatz sequence of $n=6$ is equal to,
 \[
-  \S(6) = \{6, 3, 10, 5, 16, 8, 4, 2, 1\},
+  S(6) = \{6, 3, 10, 5, 16, 8, 4, 2, 1\},
 \]
 and therefore its stopping time is equal to $m=8$.
 \begin{enumerate}
 \item Write the body of the function {\tt collatz\_step(n)} defined in the
-  module \\* {\tt homework1.exercise1.collatz\_step}. (That is, in the file {\tt
-    homework1/exercise1.py} located in the homework repository.) The value of
-  this function should be equal to the function $C(n)$ defined above.
-\item Write the body of the function {\tt collatz(n)} corresponding to the
-  funciton $S(n)$ defined above. This function should output the Collatz
-  sequence corresponding to the input $n > 0$.
-\item {\bf Report:} For your homework report, create a scatter plot of stopping
-  times for all $1 \leq n \leq 5000$. That is, the input integer $n$ should be
-  on the horizontal axis and the stopping time should be on the vertical axis.
-  {\it Be sure to include appropriate labels and a title. Make the color of the
-    data points blue.} Do you think based on this picture that the Collatz
-  conjecture is true? Say something about how the picture might be sufficient or
-  insufficient to make the conjecture.
+  module {\tt homework1.exercise1} such that it behaves in the same way as the
+  mathematical function $C(n)$ defined above. (That is, fill in the definition
+  of the function defined in the file {\tt homework1/exercise1.py} located in
+  the homework repository.)
+\item Write the body of the function {\tt collatz(n)} such that it behaves in
+  the same way as the mathematical function $S(n)$ defined above. This function
+  should output the Collatz sequence corresponding to the input $n > 0$ as a
+  Python {\tt list}.
+\item For this exercise, documentation is provided for you.
 \item {\bf Automated Tests:} The hidden test suite will test your
   implementations of {\tt collatz\_step} and {\tt collatz} in the following way:
   \begin{itemize}
-  \item Does {\tt collatz\_step} produce the correct output on a variety of
+  \item (1pt) Does {\tt collatz\_step} produce the correct output on a variety
+    of examples?
+  \item (1pt) Does {\tt collatz\_step} properly handle the case when $n = 1$?
+  \item (1pt) Does {\tt collatz\_step} raise a {\tt ValueError} when given a
+    number less than or equal to zero? (The test is already written for you but
+    you have to define the behavior in {\tt collatz\_step}. Note how one tests
+    if an error is raised in Python.)
+  \item (1pt) Does {\tt collatz} produce the correct output on a variety of
     examples?
-  \item Does {\tt collatz\_step} handle the case when $n = 1$ properly?
-  \item Does {\tt collatz} produce the correct output on a variety of examples?
   \end{itemize}
+\item (3pts) {\bf Report:} For your homework report, create a scatter plot of
+  stopping times for all $1 \leq n \leq 5000$. That is, the input integer $n$
+  should be on the horizontal axis and the stopping time should be on the
+  vertical axis. {\it Be sure to include appropriate labels and a title. Make
+    the color of the data points blue.} Do you think based on this picture that
+  the Collatz conjecture is true? Does it seem more likely if you plot the
+  stopping times for larger $n$? Say something about how the picture might be
+  sufficient or insufficient to make the conjecture.
 \end{enumerate}
 
 
-\section*{Exercise \#2}
 
-Many scientific computation problems involve finding the root of a given
-function. Newton's method is a simple, yet highly effective and popular way to
-numerically approximate a ``nearby'' root $x^*$ of a function $f : \mathbb{C}
-\to \mathbb{C}$. Define the {\it Newton step function},
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Exercise \#2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Many scientific computation problems require finding the {\it global minimum} of
+a function,
 \[
-  N(f, x_0) =
-  \begin{cases}
-    x_0 - \frac{f(x_0)}{f'(x_0)}, & \text{if } f'(x_0) \neq 0, \\
-    x_0, & \text{if } f'(x_0) = 0,
-  \end{cases}
+  x^* = \text{argmin}_{x \in \mathbb{R}} f(x).
 \]
-and the {\it Newton iteration function},
+That is, $x^*$ is such that $f(x^*) \leq f(x)$ for all $x \in \mathbb{R}$.
+However, the search for a global minimum is often infeasible so instead we seek
+a {\it local minimum},
 \[
-  N_k(f, x_0)
-  =
-  \underbrace{(N \circ N \circ \cdots \circ N)}_{k \text{ times}}(f, x_0).
+  x^* = \text{argmin}_{x \in S \subset \mathbb{R}} f(x).
 \]
-That is, $N_k(f,x_0)$ is the result of $k$ repeated applications of the Newton
-step function to the output of each previous evaluation. In other words, given
-an inital guess $x_0$,
-\[
-  x_1 := N(f,x_0), \;
-  x_2 := N(f,x_1), \;
-  \ldots, \;
-  x_k := N(f,x_{k-1}) = N_k(f,x_0).
-\]
-The function, $N_k$, satisfies the property,
-\[
-  \lim_{k \to \infty} N_k(f, x_0) = x^* \quad \text{where} \quad f(x^*) = 0.
-\]
-That is, the limit $x^*$ is equal to some root of the function $f$.
+That is $x^*$ is such that $f(x^*) \leq f(x)$ for all $x \in S$, some subset of
+$\mathbb{R}$. The {\it gradient descent algorithm} is one approach to finding a
+local minima: given a function $f : \mathbb{R} \to \mathbb{R}$ and some initial
+guess $x_0$,
+\begin{enumerate}
+\item Initialize the convergence criterion, $\epsilon \in (0,1)$.
+\item Initialize the scaling factor, $\sigma \in (0,1)$.
+\item Initialize $x_{k+1} \gets x_0$ and $x_k \gets x_0 + 1$.
+\item While $|x_{k+1} - x_k| > \epsilon$,
+\begin{enumerate}
+\item Update $x_k \gets x_{k+1}$.
+\item Compute $x_{k+1} \gets x_k - \sigma f'(x_k)$.
+\end{enumerate}
+\item Return $x_{k+1}$.
+\end{enumerate}
+The step 4b produces a new guess $x_{k+1}$ which lies in the direction of
+steepest descent towards a local minima. This loop continues to iterate
 
 \begin{enumerate}
-\item Write the body of the Python function {\tt newton\_step(f, df, x0)}
-  located at the Python module {\tt homework1.exercise1.newton\_step}. (i.e. in
-  the file {\tt homework1/exercise1.py} within the homework repo.) To account
-  for floating point roundoff error change the condition
+\item Write the body of the function {\tt gradient\_step(xk, df, sigma)} defined
+  in the module {\tt homework1.exercise2} which returns the next iterate
+  $x_{k+1}$ given the previous iterate $x_k$, the derivative $f'$ of the
+  function we are trying to minimize, and a scaling factor $\sigma \in (0,1)$.
+\item Using {\tt gradient\_step}, write the body of the function {\tt
+    gradient\_descent(f, df, x0, sigma=0.5, epsilon=1e-8)} which, given a
+  function $f$, its derivative $f'$, an inital guess for the local minimum
+  $x_0$, optional choice of scaling parameter $\sigma$, and optional choice of
+  convergence criterion $\epsilon$ returns a local minima $x^*$ such that
   \[
-    \text{if } f'(x_0) \neq 0
+    f(x^*) \leq f(x)
   \]
-  to
-  \[
-    \text{if } | f'(x_0) | < 10^{-12}
-  \]
-  in the definition of $N(f,x_0)$.
-\item Use your \verb=newton_step= function to write the body of the function
-  \verb=newton(f, df, x0)=.
+  for all nearby $x$. Because of the convergence criterion $\epsilon$ this
+  minima will be an approximate minima. Note also that {\tt sigma} and {\tt
+    epsilon} are {\it keyword arguments}. (Optional Python arguments.)
+\item Remember to provide documentation for these functions using the formatting
+  described in the file {\tt Grading.md} on the course website.
+\item {\bf Automated Tests:} The hidden test suite will test your
+  implementations of {\tt gradient\_step} and {\tt gradient\_descent} in the
+  following way:
+  \begin{itemize}
+    \item (1pt) Does {\tt gradient\_step} produce the correct output on a
+      variety of examples? (i.e. verify that the function matches the
+      mathematical definiton)
+    \item (1pt) Does {\tt gradient\_descent} correctly find the global minimum
+      of functions that have a single, global minimum? (These are called {\it
+        convex functions}.)
+    \item (1pt) Does {\tt gradient\_descent} correctly find minima which are
+      very close to the initial guess and the scaling factor {\tt sigma} is
+      chosen to be small? (i.e. when $\sigma = 0.1)$) Small values of $\sigma$
+      ccorrespond to very small steps in the algorithm.
+    \item (1pt) Does {\tt gradient\_descent} raise a {\tt ValueError} when the
+      given scaling factor {\tt sigma} {\bf does not} lie in the interval
+      $(0,1)$?
+    \item (1pt) How robust is your implementation of {\tt gradient\_descent}?
+      Can it handle the case when the gradient satisfies $f'(x_0) = 0$ but $x_0$
+      is not a local minima? (What would the value $x_0$ be classified as,
+      otherwise?) Modify the function in some way to account for this situation
+      without changing the way in which {\tt gradient\_descent} is called such
+      that the function finds some closer local minima.
+  \end{itemize}
+\item {\bf Report:} Using $f(x) = \cos(x)$ plot the function over the interval
+  $(0,2 \pi)$. Using an initial guess of $x_0 = 0.1$ plot the points $(x_k,
+  f(x_k))$ as blue circles or dots on top of your plot of $f$ where the $x_k$
+  are each of the iterates in the gradient descent algorithm. Describe what sort
+  of problems may occur if you were allowed to take $\sigma > 1$?
 \end{enumerate}
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Exercise \#3}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+Many computational problems boil down to solving linear systems of equations:
+given an $n \times n$ matrix $A \in \mathbb{R}^{n \times n}$ and a vector $b \in
+\mathbb{R}^n$ find $x \in \mathbb{R}^n$ satisfying
+\[
+  Ax = b.
+\]
+If $A$ is invertible then the unique solution is $x = A^{-1}b$. However,
+computing the inverse of a matrix is not only costly ($O(n^3)$ operations) but
+{\it numerically unstable}: small errors in the matrix $A$ could lead to large
+errors in the result $A^{-1}$. There is a large business in solving the above
+equation without resorting to computing matrix inverses.
+
+The Jacobi and Gauss-Seidel methods are iterative techniques for solving linear
+systems. Write,
+\[
+  A = D + L + U
+\]
+where $D$ consists of all elements of $A$ on the main diagonal (and zero
+everywhere else), $L$ consists of all the elements below the main diagonal (and
+zero everywhere else), and $U$ consists of all the elements above the main
+diagonal (and zero everywhere else).
+
+{\bf Jacobi Method:} One key observation is that it is numerically stable (and
+trivial) to solve diagonal systems: systems of the form $Mx=b$ where $M$ is a
+diagonal matrix.
+\begin{align*}
+  Ax = b
+& \Leftrightarrow
+(D + L + U)x = b \\
+&\Leftrightarrow
+Dx = b - (L + U)x
+%\Big( &\Leftrightarrow x = D^{-1} \big(b - (L + U)x \big) \Big)
+\end{align*}
+
+{\bf Gauss-Seidel:} Another observation is that there exist numerically stable
+and fast algorithms for solving triangular systems of equations.
+\begin{align*}
+  Ax = b
+&\Leftrightarrow
+(D + L + U)x = b \\
+&\Leftrightarrow
+(D+U)x = b - Lx
+%\Big( &\Leftrightarrow x = (D+L)^{-1} \big(b - Ux \big) \Big)
+\end{align*}
+Both of these methods can be written in the form
+\[
+  Sx = b - Tx
+\]
+for appropriate definitions of $S$ and $T$ in the Jacobi and Gauss Seidel cases.
+
+The algorithm for iteratively solving the linear system is as follows: let $x_0
+\in \mathbb{R}^n$ be an initial guess for the solution to $Ax = b$. Define the
+sequence of vectors as the solutions to the systems of equations,
+\begin{align*}
+  Sx_1 &= b - Tx_0, \\
+  Sx_2 &= b - Tx_1, \\
+  Sx_3 &= b - Tx_2, \\
+       & \; \; \vdots
+\end{align*}
+Theorem states that as long as $A$ is {\it strictly diagonally dominant} then
+$\lim_{n\to\infty} x_n = x$ for both Jacobi and Gauss-Seidel methods. (In fact,
+the Gauss-Seidel method only requires that the matrix be diagonally dominant).
+That is, the sequence $x_0, x_1, x_2, \ldots$ converges to the solution of the
+linear system $Ax=b$. Due to roundoff error we say that the method has converged
+when 
+\[
+  ||x_{k+1} - x_k||_2 < \epsilon
+\]
+for some $\epsilon > 0$.
+
+\begin{enumerate}
+\item Write the body of the helper function {\tt decompose(A)} which returns the
+  matrices $D, L,$ and $U$ given a matrix $A$. The input and output matrices
+  should all be 2D Numpy arrays. (Hint: the {\tt numpy.diag} and {\tt
+    numpy.tril} commands are useful.)
+\item Write the body of the helper function {\tt is\_sdd(A)} which returns {\tt
+    True} if $A$ is strictly diagonally dominant and {\tt False} otherwise. The
+  input matrix should be a 2D Numpy array.
+\item Write the body of the Python function {\tt jacobi\_step(D,L,U,b,xk)}
+  which, given a guess $x_k \in \mathbb{R}$ computes the next iterate $x_{k+1}
+  \in \mathbb{R}$ using the Jacobi iteration technique. The input should be the
+  three matrix components $D,L,$ and $U$ as 2D Numpy arrays as well as vectors
+  $b$ and $x_k$ given as a Numpy arrays. Do not use {\tt numpy.linalg.solve} to
+  solve the equation $Sx_{k+1} = b - Tx_k$.
+\item Write the body of the Python function {\tt jacobi(A,b,x0,epsilon=1e-8)}
+  which, given a guess $x_0$ returns an approximate solution to the system $Ax =
+  b$. This function should use the functions {\tt decompose} and {\tt
+    jacobi\_step} written above. Have the method return the iterate $x_{k+1}$
+\item Repeat parts 2. and 3. but with the Gauss-Seidel method. That is, write
+  the bodies of the functions {\tt gauss\_seidel\_step} and {\tt
+    gauss\_seidel\_iteration}. Note the system $Sx_{k+1} = b - Tx_k$ is now a
+  lower-triangular system. To take advantage of this situation use the function
+  {\tt scipy.linalg.solve\_triangular}.
+\item {\bf Automated tests:} The hidden test suite will test your
+  implementations of the Jacobi and Gauss-Seidel solvers in the following way:
+  \begin{itemize}
+  \item (1pt) That {\tt decompose} produced the correct output for various
+    dense, square matrices.
+  \item (1pt) That {\tt jacobi\_step} produces the correct output for a simple
+    tri-diagonal matrix $A$.
+  \item (1pt) That {\tt gauss\_seidel\_step} produces the correct output for a
+    simple tri-diagonal matrix $A$.
+  \item (1pt) That {\tt jacobi\_iteration} converges to an approximate solution
+    to $Ax = b$ for a simple tri-diagonal matrix $A$ and a given right-hand side
+    vector $b$.
+  \item (1pt) That {\tt gauss\_seidel\_iteration} converges to an approximate
+    solution to $Ax = b$ for a simple tri-diagonal matrix $A$ and a given
+    right-hand side vector $b$.
+  \end{itemize}
+\item {\bf Report:} Gauss-Seidel tends to have a much better convergence rate
+  than Jacobi at the cost of more work per iteration. (A diagonal solve is
+  cheaper, $O(n)$, than a triangular solve, $O(n^2)$.) Let $A$ equal the $32
+  \times 32$ matrix,
+  \[
+    A = 
+    \begin{pmatrix}
+      -5 & 1     & 1      &        &        & \\
+      1 & -5     & 1      & 1      &        & \\
+      1 & 1      & -5     & 1      & 1      & \\
+        & \ddots & \ddots & \ddots & \ddots & \ddots \\
+        & & & & & & \\
+        & & & & & &
+    \end{pmatrix}.
+  \]
+  (That is, the $32 \times 32$ matrix consisting of -5's along the main diagonal
+  and 1's along the -2, -1, +1, and +2 subdiagonals.) Let $b$ be the vector,
+  \[
+    \text{\tt b = numpy.sin(10*numpy.linspace(-1,1,32))},
+  \]
+  and let the initial guess $x_0$ be the vector of all ones. At each iteration
+  we can compute the {\it residual}, $r_k$, of the result which is defined,
+  \[
+    r_k = b - Ax_k.
+  \]
+  Create a plot with the iteration number $k$ on the horizontal axis and the
+  norm of the residual $||r_k||$ along the vertical axis for both the Jacobi and
+  the Gauss-Seidel methods applied to the system $Ax = b$. Use two different
+  colors for the Jacobi residuals and the Gauss-Seidel residuals. Which one
+  converges more quickly? What happens to these plots when you decrease epsilon
+  to $10^{-20}$. (Or anything smaller than $10^{-16}$.)
+\end{enumerate}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section*{Exercise \#4 (AMath 583 Only)}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% {\it This problem is to be completed only by the students enrolled in the AMath
+%   583 sections. Students in the AMath 483 sections are welcome to attempt this
+%   problem but will not be graded on their results.}
+
+
+% Gradient descent is a useful tool for finding a local minima in the case when we
+% have an explicit expression for the objective function $f$. However, there are
+% situations where we would not have such an expression. (See the video shown on
+% the first day of class on optimizing the placement and configuration of heat
+% sinks and a fan in a computer casing.) There is a class of {\it gradient-free}
+% techniques for finding local minima that do not require knowledge of the
+% derivative of our objective function. One such method is sometimes called the
+% {\it genetic algorithm}.
+
+% Given a collection of guesses $x_i \in \mathbb{R}^m$ for the minimum of a
+% function $f : \mathbb{R}^m \to \mathbb{R}$ the idea behind the genetic algorithm
+% is {\it mutate} these guesses (hence the name) by randomly perturbing them.
+% Then, one takes a subset of those random perturbations which are better
+% approximations for the minimum of $f$ and repeat. The algorithm can be described
+% as follows: let $n = pk$ for some positive integers $p$ and $k$,
+% \begin{enumerate}
+% \item Initialize the generation counter $g = 1$.
+% \item Begin with $n$ guesses for the minimum: $x_1, x_2, \ldots, x_n$.
+% \item Pick the $p$ best guesses for the minimum from this list of $n$ guesses.
+% \item For each of the $p$ guesses, generate $k$ random perturbations of that
+%   guess. That is, from guess $x_i$ generate perturbations $x_{i,1}, x_{i,2},
+%   \ldots, x_{i,k}$.
+% \item Collect all of these $n$ guesses and repeat from Step 2, incrementing the
+%   generation counter by one.
+% \end{enumerate}
+
+% \begin{enumerate}
+% \item Write the body of the function {\tt genetic\_perturbations(xi, k,
+%     generation)} such that, for a given $x_i \in \mathbb{R}^m$ it returns $k$
+%   random perturbations of the form
+%   \[
+%     x_{i,j} = x_i + \frac{N(0,1)}{\text{\tt generation}}
+%   \]
+%   where $N(0,1)$ is the standard normal distribution. To obtain values from
+%   $N(0,1)$ use the Numpy function {\tt numpy.random.randn}.
+% \item {\bf Automated tests:} the hidden test suite will test your
+%   implementations of {\tt genetic\_perturbations}, {\tt genetic\_step}, and {\tt
+%     genetic\_algorithm} in the following way:
+%   \begin{itemize}
+%   \item (1pt) Does {\tt genetric\_perturbations} generate the correct number of
+%     perturbations with the appropriate scaling?
+%     \item (1pt) Does {\tt genetic\_step} produce $p$ new guesses? Note that the
+%       nature of the algorithm makes it difficult to ensure that these are better
+%       guesses than before.
+%     \item (1pt) Does {\tt genetic\_algorithm} produce a local minima?
+%   \end{itemize}
+% \end{enumerate}
+
+
+
 \end{document}
+
+% For example,
+% \begin{gather*}
+% A
+% =
+% \begin{pmatrix}
+% 1 & 2 & 3 & 4 \\
+% 5 & 6 & 7 & 8 \\
+% 9 & 10 & 11 & 12 \\
+% 13 & 14 & 15 & 16
+% \end{pmatrix}, \\
+% D
+% =
+% \begin{pmatrix}
+% 1 & 0 & 0 & 0 \\
+% 0 & 6 & 0 & 0 \\
+% 0 & 0 & 11 & 0 \\
+% 0 & 0 & 0 & 16
+% \end{pmatrix}, \quad
+% L =
+% \begin{pmatrix}
+% 0 & 0 & 0 & 0 \\
+% 5 & 0 & 0 & 0 \\
+% 9 & 10 & 0 & 0 \\
+% 13 & 14 & 15 & 0
+% \end{pmatrix}, \quad
+% U =
+% \begin{pmatrix}
+% 0 & 2 & 3 & 4 \\
+% 0 & 0 & 7 & 8 \\
+% 0 & 0 & 0 & 12 \\
+% 0 & 0 & 0 & 0
+% \end{pmatrix}.
+% \end{gather*}
+
+
+% Many scientific computation problems involve finding the root of a given
+% function. Newton's method is a simple, yet highly effective and common way to
+% numerically approximate a root, $x^*$, of a function $f : \mathbb{C} \to
+% \mathbb{C}$. Define the {\it Newton step function},
+% \[
+%   N(f, x_0) =
+%   \begin{cases}
+%     x_0 - f(x_0) / f'(x_0), & \text{if } f'(x_0) \neq 0, \\
+%     x_0, & \text{if } f'(x_0) = 0,
+%   \end{cases}
+% \]
+% and the {\it Newton iteration function},
+% \[
+%   N_k(f, x_0)
+%   =
+%   \underbrace{(N \circ N \circ \cdots \circ N)}_{k \text{ times}}(f, x_0).
+% \]
+% That is, $N_k(f,x_0)$ is the result of $k$ repeated applications of the Newton
+% step function to the output of each previous evaluation. In other words, given
+% an inital guess $x_0$,
+% \[
+%   x_1 := N(f,x_0), \quad
+%   x_2 := N(f,x_1), \quad
+%   \ldots, \quad
+%   x_k := N(f,x_{k-1}) = N_k(f,x_0).
+% \]
+% The function, $N_k$, satisfies the property,
+% \[
+%   \lim_{k \to \infty} N_k(f, x_0) = x^* \quad \text{where} \quad f(x^*) = 0.
+% \]
+% That is, the limit, $x^*$, is equal to {\it some} root of the function $f$.
+% (Note that $x^*$ may not be the root closest to your initial guess $x_0$.)
+
+% \begin{enumerate}
+% \item Write the body of the Python function {\tt newton\_step(f, df, x0)}
+%   located at the module {\tt homework1.exercise2.newton\_step} such that it
+%   behaves in the same way as the mathematical function $N(f,x_0)$ defined above.
+%   Note that the derivative, $f'$, of $f$ needs to be explicitly sent to {\tt
+%     newton\_step}, represented by the parameter {\tt df}.
+
+%   To account for floating point roundoff error change the condition
+%   \[
+%     \text{if } f'(x_0) = 0
+%   \]
+%   to
+%   \[
+%     \text{if } | f'(x_0) | < 10^{-12}
+%   \]
+%   in the definition of $N(f,x_0)$.
+% \item Use the {\tt newton\_step} function to write the body of the function {\tt
+%     newton(f, df, x0)}. Note that we cannot take limits on a computer.
+%   (Furthermore roundoff error will prevent us from ever reaching an exact root
+%   of $f$.) Therefore, given an $x_0 \in \mathbb{R}$ the function {\tt newton}
+%   should return an $x \in \mathbb{R}$ such that
+%   \[
+%     |f(x)| < 10^{-12}
+%   \]
+%   by using repreated applications of {\tt newton\_step}.
+% \item {\bf Automated tests:} The automated test suite will test your
+%   implementations of {\tt newton\_step} and {\tt newton} in the following way:
+%   using the function $f(x) = x^3 - 1$,
+%   \begin{itemize}
+%   \item (1pt) Does {\tt newton\_step} produce the correct output for various
+%     guesses of [XXX]
+%   \item (1pt) Does {\tt newton\_step} properly handle the case when $f'(x_0)$ is
+%     close to zero?
+%   \item (1pt) Does {\tt newton} produce a root of $f(x) = x^3 - 1$ for various
+%     input $x_0$?
+%   \item (1pt) Does {\tt newton} properly handle the case then $f'(x_0)$ is close
+%     to zero?
+%   \item (1pt) Did you properly code in the thresholds $10^{-12}$ for gradient
+%     vanishing and root detection? That is, no $x$ should be output such that
+%     $|f(x)| > 10^{-12}$.
+%   \end{itemize}
+% \item {\bf Report:} (No report for this question.) [XXX} GRADUATE STUDENTS ONLY
+% CREATE THE FRACTAL PLOT
+% \end{enumerate}
+
