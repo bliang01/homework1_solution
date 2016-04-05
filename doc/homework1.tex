@@ -17,6 +17,13 @@ in part, as practice for submitting homework using git and GitHub as well as a
 test of your Python, Numpy, and Matplotlib knowledge and your general
 programming abilities.
 
+This private repository created for you by following the link sent to you via
+email should have the name {\tt homework1\_githubusername} and should be labeled
+as ``private''. (Visible by yourself and the instructors and teaching
+assistants, only.) {\bf Do not manually fork the repository {\tt
+    uwhpsc-2016/homework1}}. Remember to commit your changes and push them to
+your private repository.
+
 Please see the document ``{\tt Grading.md}'' on the course website for
 instructions on how to write and submit your homework. Recall that there are
 four main components that you will be graded on:
@@ -91,13 +98,13 @@ and therefore its stopping time is equal to $m=8$.
     of examples?
   \item (1pt) Does {\tt collatz\_step} properly handle the case when $n = 1$?
   \item (1pt) Does {\tt collatz\_step} raise a {\tt ValueError} when given a
-    number less than or equal to zero? (The test is already written for you but
-    you have to define the behavior in {\tt collatz\_step}. Note how one tests
-    if an error is raised in Python.)
+    number less than one? (The test is already written for you but you have to
+    define the behavior in {\tt collatz\_step}. Note how one tests if an error
+    is raised in Python.)
   \item (1pt) Does {\tt collatz} produce the correct output on a variety of
     examples?
   \end{itemize}
-\item (3pts) {\bf Report:} For your homework report, create a scatter plot of
+\item {\bf Report:} (3pts) For your homework report, create a scatter plot of
   stopping times for all $1 \leq n \leq 5000$. That is, the input integer $n$
   should be on the horizontal axis and the stopping time should be on the
   vertical axis. {\it Be sure to include appropriate labels and a title. Make
@@ -141,7 +148,9 @@ guess $x_0$,
 \item Return $x_{k+1}$.
 \end{enumerate}
 The step 4b produces a new guess $x_{k+1}$ which lies in the direction of
-steepest descent towards a local minima. This loop continues to iterate
+steepest descent towards a local minima. This loop continues to iterate until
+the difference between subsequent approximates for minima becomes sufficiently
+small.
 
 \begin{enumerate}
 \item Write the body of the function {\tt gradient\_step(xk, df, sigma)} defined
@@ -185,11 +194,11 @@ steepest descent towards a local minima. This loop continues to iterate
       without changing the way in which {\tt gradient\_descent} is called such
       that the function finds some closer local minima.
   \end{itemize}
-\item {\bf Report:} Using $f(x) = \cos(x)$ plot the function over the interval
-  $(0,2 \pi)$. Using an initial guess of $x_0 = 0.1$ plot the points $(x_k,
-  f(x_k))$ as blue circles or dots on top of your plot of $f$ where the $x_k$
-  are each of the iterates in the gradient descent algorithm. Describe what sort
-  of problems may occur if you were allowed to take $\sigma > 1$?
+\item {\bf Report:} (3pts) Using $f(x) = \cos(x)$ plot the function over the
+  interval $(0,2 \pi)$. Using an initial guess of $x_0 = 0.1$ plot the points
+  $(x_k, f(x_k))$ as blue circles or dots on top of your plot of $f$ where the
+  $x_k$ are each of the iterates in the gradient descent algorithm. Describe
+  what sort of problems may occur if you were allowed to take $\sigma > 1$?
 \end{enumerate}
 
 
@@ -299,6 +308,8 @@ for some $\epsilon > 0$.
   \begin{itemize}
   \item (1pt) That {\tt decompose} produced the correct output for various
     dense, square matrices.
+  \item (1pt) Does {\tt is\_sdd} correctly identify matrices which are strictly
+    diagonally dominant? Does it correctly identify those that are not?
   \item (1pt) That {\tt jacobi\_step} produces the correct output for a simple
     tri-diagonal matrix $A$.
   \item (1pt) That {\tt gauss\_seidel\_step} produces the correct output for a
@@ -310,8 +321,8 @@ for some $\epsilon > 0$.
     solution to $Ax = b$ for a simple tri-diagonal matrix $A$ and a given
     right-hand side vector $b$.
   \end{itemize}
-\item {\bf Report:} Gauss-Seidel tends to have a much better convergence rate
-  than Jacobi at the cost of more work per iteration. (A diagonal solve is
+\item {\bf Report:} (3pts) Gauss-Seidel tends to have a much better convergence
+  rate than Jacobi at the cost of more work per iteration. (A diagonal solve is
   cheaper, $O(n)$, than a triangular solve, $O(n^2)$.) Let $A$ equal the $32
   \times 32$ matrix,
   \[
