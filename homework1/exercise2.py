@@ -53,7 +53,7 @@ def gradient_descent(f, df, x, sigma=0.5, epsilon=1e-8):
 
     # randomly perturb x for robustness
     if abs(df(x)) < 1e-14:
-        x = x + randn(1)/100
+        x = x + randn()/100
 
     xkp1 = x
     xk = x + 1

@@ -2,6 +2,16 @@ from numpy import diag, tril, triu, dot, ones, zeros
 from numpy.linalg import norm
 from scipy.linalg import solve_triangular
 
+def is_sdd(A):
+    n = len(A)
+    sdd = True
+    for i in range(n):
+        sumR=sum(abs(A[i,:]))-abs(A[i,i])
+        if abs(A[i,i])-sumR <= 0:
+            sdd=False
+            break
+    return sdd
+
 def decompose(A):
     D = diag(diag(A))
     L = tril(A) - D
