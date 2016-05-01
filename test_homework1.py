@@ -328,7 +328,9 @@ class TestExercise3(unittest.TestCase):
         x1 = gauss_seidel_step(D, L, U, b, x0)
         x1_actual = array([-0.06170079,  0.16227553,  0.09662346,  0.10123638, -0.08866736,
                            -0.19775514,  0.32920744, -0.0703139 , -0.00683268, -0.12536298])
-        self.assertAlmostEqual(norm(x1-x1_actual), 0)
+        x1_actual_correct = array([0.00304304, 0.23614172, -0.02455408, -0.06194853, -0.05440617,
+                                   -0.25609386, 0.10316296,  0.05625159, -0.04209044, -0.05416704])
+        self.assertAlmostEqual(min(norm(x1-x1_actual), norm(x1-x1_actual_correct)), 0)
 
     def test_jacobi_iteration(self):
         # the test written below tests if jacobi iteration produces the
@@ -412,7 +414,8 @@ class TestExercise3(unittest.TestCase):
         x_actual = solve(A,b)
         err = norm(x-x_actual)
         true_err = 5.8690481842626678e-06
-        self.assertTrue(round(err-true_err,12)==0)
+        true_err_correct = 8.0354012468682747e-06
+        self.assertTrue(round(min(abs(err-true_err),abs(err-true_err_correct)),12)==0)
 
 
 
